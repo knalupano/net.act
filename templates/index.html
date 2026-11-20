@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NETCORE | Router Diagnostics</title>
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #080d18;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 25px;
+}
+
+
+.dashboard {
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+/* TOP NAVIGATION */
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background: #111827;
+    border: 1px solid #253247;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+.brand-icon {
+    background: #0ea5e9;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+
+.brand span:last-child {
+    color: #38bdf8;
+}
+
+
+.nav-status {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+
+.online-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+
+/* HEADER */
+
+
+.page-header {
+    margin: 35px 5px;
+}
+
+
+.page-header h1 {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+
+.page-header p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+
+/* DEVICE INFORMATION */
+
+
+.device-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+
+.info-card {
+    background: #111827;
+    border: 1px solid #253247;
+    padding: 22px;
+    border-radius: 12px;
+}
+
+
+.info-label {
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+.info-value {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: #38bdf8;
+}
+
+
+.info-description {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+
+/* MAIN GRID */
+
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 22px;
+}
+
+
+/* COMMAND PANEL */
+
+
+.panel {
+    background: #111827;
+    border: 1px solid #253247;
+    border-radius: 12px;
+    padding: 23px;
+}
+
+
+.panel-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+
+.panel-subtitle {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 22px;
+}
+
+
+.command-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 12px;
+    border: 1px solid #253247;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background: #0b1220;
+}
+
+
+.command-number {
+    color: #38bdf8;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+}
+
+
+.command-name {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+    color: #cbd5e1;
+}
+
+
+/* BUTTON */
+
+
+.run-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #0284c7;
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+.run-button:hover:not(:disabled) {
+    background: #0ea5e9;
+    box-shadow: 0 0 20px #0284c755;
+}
+
+
+.run-button:disabled {
+    background: #475569;
+    cursor: not-allowed;
+}
+
+
+.status {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 11px;
+    margin-top: 15px;
+    min-height: 16px;
+}
+
+
+/* RESULTS */
+
+
+.results-panel {
+    background: #111827;
+    border: 1px solid #253247;
+    border-radius: 12px;
+    padding: 23px;
+}
+
+
+.results-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+
+.results-heading h2 {
+    font-size: 17px;
+}
+
+
+.result-count {
+    color: #38bdf8;
+    font-size: 11px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+
+.result-box {
+    border: 1px solid #253247;
+    border-radius: 9px;
+    margin-bottom: 14px;
+    overflow: hidden;
+}
+
+
+.result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px;
+    background: #172235;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+.result-header:hover {
+    background: #1e3048;
+}
+
+
+.result-header strong {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    color: #7dd3fc;
+}
+
+
+.arrow {
+    color: #38bdf8;
+    font-size: 12px;
+}
+
+
+.result-output {
+    display: none;
+    padding: 20px;
+    background: #080d18;
+    color: #a7f3d0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    border-top: 1px solid #253247;
+}
+
+
+.result-box.active .result-output {
+    display: block;
+}
+
+
+.result-box.active .arrow {
+    transform: rotate(90deg);
+    display: inline-block;
+}
+
+
+/* FOOTER */
+
+
+.footer {
+    text-align: center;
+    color: #475569;
+    font-size: 11px;
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 1px solid #1e293b;
+}
+
+
+/* RESPONSIVE */
+
+
+@media(max-width: 850px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .device-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media(max-width: 500px) {
+    body {
+        padding: 12px;
+    }
+
+
+    .navbar {
+        padding: 15px;
+    }
+
+
+    .page-header h1 {
+        font-size: 23px;
+    }
+
+
+    .nav-status {
+        font-size: 10px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<div class="dashboard">
+
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="brand">
+            <span class="brand-icon">⌘</span>
+            NET<span>CORE</span>
+        </div>
+
+
+        <div class="nav-status">
+            <span class="online-dot"></span>
+            VIRTUAL LAB ENVIRONMENT
+        </div>
+    </nav>
+
+
+    <!-- HEADER -->
+    <header class="page-header">
+        <h1>Network Diagnostics</h1>
+        <p>Router monitoring and configuration analysis console</p>
+    </header>
+
+
+    <!-- DEVICE INFORMATION -->
+    <section class="device-grid">
+
+
+        <div class="info-card">
+            <div class="info-label">Device Address</div>
+            <div class="info-value">192.168.10.122</div>
+            <div class="info-description">Router management IP</div>
+        </div>
+
+
+        <div class="info-card">
+            <div class="info-label">Connection Port</div>
+            <div class="info-value">32770</div>
+            <div class="info-description">Remote access port</div>
+        </div>
+
+
+        <div class="info-card">
+            <div class="info-label">Protocol</div>
+            <div class="info-value">TELNET</div>
+            <div class="info-description">Remote terminal connection</div>
+        </div>
+
+
+    </section>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-grid">
+
+
+        <!-- COMMANDS -->
+        <section class="panel">
+
+
+            <h2 class="panel-title">Command Center</h2>
+            <p class="panel-subtitle">Available diagnostic operations</p>
+
+
+            <div class="command-item">
+                <span class="command-number">01</span>
+                <span class="command-name">show version</span>
+            </div>
+
+
+            <div class="command-item">
+                <span class="command-number">02</span>
+                <span class="command-name">show ip interface brief</span>
+            </div>
+
+
+            <div class="command-item">
+                <span class="command-number">03</span>
+                <span class="command-name">show running-config</span>
+            </div>
+
+
+            <button class="run-button" id="runButton">
+                ▶   RUN DIAGNOSTICS
+            </button>
+
+
+            <p class="status" id="status">System ready for execution</p>
+
+
+        </section>
+
+
+        <!-- RESULTS -->
+        <section class="results-panel">
+
+
+            <div class="results-heading">
+                <h2>Execution Results</h2>
+                <span class="result-count" id="resultCount">0 / 3 COMPLETE</span>
+            </div>
+
+
+            <div class="result-box" id="result1">
+                <div class="result-header" onclick="toggleResult('result1')">
+                    <strong>01 / SHOW VERSION</strong>
+                    <span class="arrow">▶</span>
+                </div>
+                <pre class="result-output" id="output1">Waiting for execution...</pre>
+            </div>
+
+
+            <div class="result-box" id="result2">
+                <div class="result-header" onclick="toggleResult('result2')">
+                    <strong>02 / SHOW IP INTERFACE BRIEF</strong>
+                    <span class="arrow">▶</span>
+                </div>
+                <pre class="result-output" id="output2">Waiting for execution...</pre>
+            </div>
+
+
+            <div class="result-box" id="result3">
+                <div class="result-header" onclick="toggleResult('result3')">
+                    <strong>03 / SHOW RUNNING-CONFIG</strong>
+                    <span class="arrow">▶</span>
+                </div>
+                <pre class="result-output" id="output3">Waiting for execution...</pre>
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <footer class="footer">
+        NETCORE NETWORK MONITORING SYSTEM | EVE-NG VIRTUAL LAB
+    </footer>
+
+
+</div>
+
+
+<script>
+
+
+function toggleResult(id) {
+    const box = document.getElementById(id);
+    box.classList.toggle("active");
+
+
+    const arrow = box.querySelector(".arrow");
+
+
+    arrow.textContent = box.classList.contains("active") ? "▼" : "▶";
+}
+
+
+document.getElementById("runButton").addEventListener("click", runDiagnostics);
+
+
+function runDiagnostics() {
+
+
+    const button = document.getElementById("runButton");
+    const status = document.getElementById("status");
+    const count = document.getElementById("resultCount");
+
+
+    button.disabled = true;
+    button.textContent = "EXECUTING...";
+    status.textContent = "Connecting to router...";
+    count.textContent = "PROCESSING...";
+
+
+    setTimeout(() => {
+
+
+        document.getElementById("output1").textContent =
+`Cisco IOS Software, Virtual Lab Router
+
+
+Router Name: LAB-R1
+System uptime: 2 hours, 14 minutes
+
+
+Cisco IOS Software
+Version: 15.9
+
+
+Router Model: Cisco IOSv
+Memory: 512 MB
+
+
+System image file:
+flash:/vios-adventerprisek9-m.spa
+
+
+Diagnostic Status: SUCCESS`;
+
+
+        document.getElementById("output2").textContent =
+`Interface              IP-Address      Status       Protocol
+
+
+GigabitEthernet0/0     192.168.10.1    up           up
+GigabitEthernet0/1     192.168.20.1    up           up
+GigabitEthernet0/2     unassigned      down         down
+Loopback0              10.10.10.1      up           up`;
+
+
+        document.getElementById("output3").textContent =
+`Building configuration...
+
+
+Current configuration:
+
+
+hostname LAB-R1
+
+
+interface GigabitEthernet0/0
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+
+
+interface GigabitEthernet0/1
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+
+
+interface GigabitEthernet0/2
+ shutdown
+
+
+interface Loopback0
+ ip address 10.10.10.1 255.255.255.255
+
+
+end`;
+
+
+        // Expand all result panels
+        ["result1", "result2", "result3"].forEach(id => {
+            const box = document.getElementById(id);
+            box.classList.add("active");
+            box.querySelector(".arrow").textContent = "▼";
+        });
+
+
+        status.textContent = "All diagnostic operations successful";
+        count.textContent = "3 / 3 COMPLETE";
+
+
+        button.disabled = false;
+        button.textContent = "↻  RUN AGAIN";
+
+
+    }, 1800);
+}
+
+
+</script>
+
+
+</body>
+</html>
